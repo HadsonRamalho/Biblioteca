@@ -45,12 +45,12 @@ fn main() {
     let mut livro : Vec<Biblioteca> = Vec::new();
 
     let mut i = 0;
-    let mut n = i.to_string();
+    let itos = i.to_string();
     while i < 3{
-        i = i + 1;
-        let n = i.to_string();
+        i += 1;
+        let itos = i.to_string();
         let t = "Titulo";
-        let conc = format!("{}{}", t, n);
+        let conc = format!("{}{}", t, itos);
         livro.push(Biblioteca {
             titulo: String::from(conc),
             id: i,
