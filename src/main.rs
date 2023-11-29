@@ -1,5 +1,6 @@
 use std::io;
 use std::io::Read;
+use std::process::exit;
 
 struct Livro{
     titulo:String,
@@ -22,30 +23,14 @@ fn stoi(y:String) -> i32{ // Transformando uma string numérica em i32
 }
 
 fn mgl_listar(biblioteca:&mut Vec<Livro>){
-
-    /*let mut i = 0;
-    let itos = i.to_string();
-    while i < 3{
-        i += 1;
-        let _itos = i.to_string();
-        let t = "Titulo";
-        let conc = format!("{}{}", t, itos);
-        livro.push(Biblioteca {
-            titulo: String::from(conc),
-            id: i,
-            autor: String::from("Autor{n}"),
-        });
-        //println!("Titulo: {}\nID: {}\nAutor: {}\n", livro.titulo, livro.id, livro.autor);
-    }*/
-    let mut i:usize = 0;
+    println!("Livros cadastrados:");
     for livro in biblioteca{
-            println!("Titulo: {}\nID:{}\nAutor: {}", livro.titulo, livro.id, livro.autor);
+            println!("Titulo: {}\nID: {}\nAutor: {}", livro.titulo, livro.id, livro.autor);
     }
 }
 
-fn mgl_adicionar(biblioteca: &mut Vec<Livro>, mut T:&mut u32) {
+fn mgl_adicionar(biblioteca: &mut Vec<Livro>, T:&mut u32){
     println!("\tCadastrando novo livro!");
-    // mut bibliotec: Vec<Livro> = Vec::new();
 
     println!("Digite o titulo do livro: ");
     let mut titulo = String::new();
@@ -65,12 +50,7 @@ fn mgl_adicionar(biblioteca: &mut Vec<Livro>, mut T:&mut u32) {
     println!("Livro cadastrado!");
 }
 
-
-
 fn menu_gerencia_livros(biblioteca:&mut Vec<Livro>, id_contador:&mut u32){
-
-    let mut biblioteca : Vec<Livro> = Vec::new();
-    let mut cont = id_contador;
     println!("1 - Listar todos os livros");
     println!("2 - Adicionar um livro");
     let mut opc = Default::default();
@@ -79,8 +59,9 @@ fn menu_gerencia_livros(biblioteca:&mut Vec<Livro>, id_contador:&mut u32){
         .expect("Erro ao ler a opção");
     let opc = stoi(opc);
     match opc{
-        1 => mgl_listar(&mut biblioteca),
-        2 => mgl_adicionar(&mut biblioteca, &mut cont),
+        1 => mgl_listar(biblioteca),
+        2 => mgl_adicionar(biblioteca, id_contador),
+        3 => println!("Saindo"),
         _ => println!("Opção inválida")
     }
 }
