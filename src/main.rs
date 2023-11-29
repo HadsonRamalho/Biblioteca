@@ -1,10 +1,16 @@
 use std::io;
 use std::io::Read;
 
-struct Biblioteca{
+struct Livro{
     titulo:String,
     id:u32,
     autor:String
+}
+
+impl Livro {
+    fn new(titulo: String, id: u32, autor: String) -> Livro {
+        Livro { titulo, id, autor }
+    }
 }
 
 fn stoi(y:String) -> i32{ // Transformando uma string numérica em i32
@@ -15,7 +21,7 @@ fn stoi(y:String) -> i32{ // Transformando uma string numérica em i32
     return y
 }
 
-fn mgl_listar(mut livro:Vec<Biblioteca>, T:u32){
+fn mgl_listar(biblioteca:&mut Vec<Livro>){
 
     /*let mut i = 0;
     let itos = i.to_string();
@@ -31,39 +37,40 @@ fn mgl_listar(mut livro:Vec<Biblioteca>, T:u32){
         });
         //println!("Titulo: {}\nID: {}\nAutor: {}\n", livro.titulo, livro.id, livro.autor);
     }*/
-    let mut i = 0;
-    for livro in &livro{
-        if i < T{
-            i += 1;
+    let mut i:usize = 0;
+    for livro in biblioteca{
             println!("Titulo: {}\nID:{}\nAutor: {}", livro.titulo, livro.id, livro.autor);
-        }
     }
 }
 
-fn mgl_adicionar(mut livro:Vec<Biblioteca>, mut T:u32){
+fn mgl_adicionar(biblioteca: &mut Vec<Livro>, mut T:&mut u32) {
     println!("\tCadastrando novo livro!");
+    // mut bibliotec: Vec<Livro> = Vec::new();
+
     println!("Digite o titulo do livro: ");
-    let mut titulo = Default::default();
+    let mut titulo = String::new();
     io::stdin()
         .read_line(&mut titulo)
         .expect("Erro ao ler o titulo do livro");
+
     println!("Digite o autor do livro: ");
-    let mut autor = Default::default();
+    let mut autor = String::new();
     io::stdin()
         .read_line(&mut autor)
         .expect("Erro ao ler o autor do livro");
-    livro.push(Biblioteca {
-        titulo: titulo,
-        id: 1,
-        autor: autor,});
-    T += 1;
+
+    let novo_livro = Livro::new(titulo.trim().to_string(), *T, autor.trim().to_string());
+    *T += 1;
+    biblioteca.push(novo_livro);
+    println!("Livro cadastrado!");
 }
 
-fn menu_gerencia_livros(){
 
-    let livro : Vec<Biblioteca> = Vec::new();
-    let T:u32 = 0;
 
+fn menu_gerencia_livros(biblioteca:&mut Vec<Livro>, id_contador:&mut u32){
+
+    let mut biblioteca : Vec<Livro> = Vec::new();
+    let mut cont = id_contador;
     println!("1 - Listar todos os livros");
     println!("2 - Adicionar um livro");
     let mut opc = Default::default();
@@ -72,8 +79,8 @@ fn menu_gerencia_livros(){
         .expect("Erro ao ler a opção");
     let opc = stoi(opc);
     match opc{
-        1 => mgl_listar(livro, T),
-        2 => mgl_adicionar(livro, T),
+        1 => mgl_listar(&mut biblioteca),
+        2 => mgl_adicionar(&mut biblioteca, &mut cont),
         _ => println!("Opção inválida")
     }
 }
@@ -81,20 +88,21 @@ fn menu_gerencia_livros(){
 fn menu(){
     println!(" Menu Principal\n1 - Buscar livro\n2 - Gerenciar livros\n3 - Sair");
     let mut opc = Default::default();
+    let mut biblioteca : Vec<Livro> = Vec::new();
+    let mut id_contador:u32 = 1;
     io::stdin()
         .read_line(&mut opc)
         .expect("Erro ao obter a opção");
 
     let opc = stoi(opc);
-    while opc != 3{
-        match opc{
+    while opc != 3 {
+        match opc {
             1 => println!("ok"),
-            2 => menu_gerencia_livros(),
+            2 => menu_gerencia_livros(&mut biblioteca, &mut id_contador),
             3 => break,
             _ => println!("Opção inválida")
-        }  
+        }
     }
-    
 }
 /*
 
