@@ -1,5 +1,3 @@
-use std::io::Read;
-use std::process::exit;
 use std::fs::File;
 use std::io::{self, Write};
 use bincode::serialize;
@@ -53,7 +51,7 @@ fn mgl_listar(biblioteca:&mut Vec<Livro>){
     }
 }
 
-fn mgl_adicionar(biblioteca: &mut Vec<Livro>, T:&mut u32){
+fn mgl_adicionar(biblioteca: &mut Vec<Livro>, t:&mut u32){
     println!("\tCadastrando novo livro!");
 
     println!("Digite o titulo do livro: ");
@@ -68,8 +66,8 @@ fn mgl_adicionar(biblioteca: &mut Vec<Livro>, T:&mut u32){
         .read_line(&mut autor)
         .expect("Erro ao ler o autor do livro");
 
-    let novo_livro = Livro::new(titulo.trim().to_string(), *T, autor.trim().to_string());
-    *T += 1;
+    let novo_livro = Livro::new(titulo.trim().to_string(), *t, autor.trim().to_string());
+    *t += 1;
     biblioteca.push(novo_livro);
     println!("Livro cadastrado!");
 }
@@ -105,7 +103,7 @@ fn menu(){
         io::stdin()
             .read_line(&mut op)
             .expect("Erro ao obter a opção");
-        let mut op = stoi(op);
+        let op = stoi(op);
         opc = op;
         match opc {
             1 => {
